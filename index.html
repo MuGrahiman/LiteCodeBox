@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="styles.css" />
 		<title>Lite Code Box</title>
 	</head>
 	<body>
@@ -115,6 +116,25 @@
 					</div>
 				</div>
 			</section>
+			<!-- Right: Output and log -->
+			<aside class="card panel stack">
+				<h2>Output</h2>
+				<div id="output" class="out" aria-live="polite"></div>
+				<div class="row">
+					<button class="btn warn" id="runTests">Run with tests</button>
+					<button class="btn secondary" id="clearOut">Clear log</button>
+				</div>
+				<h3>Notes</h3>
+				<ul class="muted" style="margin: 0 0 8px 0; padding-inline-start: 18px">
+					<li>Everything runs inside the browser in a sandbox.</li>
+					<li>You can save the work as a JSON file and restore it.</li>
+				</ul>
+			</aside>
 		</main>
+		<div class="footer">
+			&copy; 2026 Lite Code Box — All rights reserved
+		</div>
+
+		<script src="script.js"></script>
 	</body>
 </html>
