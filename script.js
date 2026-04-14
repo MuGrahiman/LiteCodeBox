@@ -193,10 +193,10 @@ $( '#runWeb' )?.addEventListener( 'click', () => runWeb( false ) );
 $( '#runTests' )?.addEventListener( 'click', () => runWeb( true ) );
 $( '#openPreview' )?.addEventListener( 'click', () => {
     const src = buildWebSrcdoc( false );
-  const w = window.open('about:blank');
+    const w = window.open( 'about:blank' );
 
     w.document.open();
-    w.document.write(src);
+    w.document.write( src );
     w.document.close();
 } );
 
@@ -236,15 +236,23 @@ const setDefaultContent = () => {
     ed_js.setValue( `// Write your js code here..`, -1 );
 };
 
-const saveProject = () => {
+const saveProject = async () => {
     try {
         const data = JSON.stringify( projectJson(), null, 2 );
         localStorage.setItem( STORAGE_KEY, data );
         const blob = new Blob( [ data ], { type: 'application/json' } );
-        const a = document.createElement( 'a' );
-        a.href = URL.createObjectURL( blob );
-        a.download = 'lite-code-box.json';
-        a.click();
+        // Use the File System Access API
+        const fileHandle = await window.showSaveFilePicker( {
+            suggestedName: 'lite-code-box.json',
+            types: [ {
+                description: 'JSON Files',
+                accept: { 'application/json': [ '.json' ] },
+            } ],
+        } );
+
+        const writableStream = await fileHandle.createWritable();
+        await writableStream.write( blob );
+        await writableStream.close();
         log( 'Save locally and downloaded as JSON file' );
 
     } catch ( error ) {
@@ -277,61 +285,61 @@ try {
     }
 } catch ( error ) {
     setDefaultContent();
-        log( 'Initial load error: ' + error, 'error' );
+    log( 'Initial load error: ' + error, 'error' );
 
 };
 
 log( 'Ready - Web only Editor ( HTML / CSS / JS ) ✨' );
 
-function normalizeProject(raw){
-  if (!raw || typeof raw !== 'object') throw new Error('Not an object');
+function normalizeProject ( raw ) {
+    if ( !raw || typeof raw !== 'object' ) throw new Error( 'Not an object' );
 
-  // accept old/new shapes; fall back to empty strings
-  const html = typeof raw.html === 'string' ? raw.html : (raw.web && raw.web.html) || '';
-  const css  = typeof raw.css  === 'string' ? raw.css  : (raw.web && raw.web.css ) || '';
-  const js   = typeof raw.js   === 'string' ? raw.js   : (raw.web && raw.web.js  ) || '';
+    // accept old/new shapes; fall back to empty strings
+    const html = typeof raw.html === 'string' ? raw.html : ( raw.web && raw.web.html ) || '';
+    const css = typeof raw.css === 'string' ? raw.css : ( raw.web && raw.web.css ) || '';
+    const js = typeof raw.js === 'string' ? raw.js : ( raw.web && raw.web.js ) || '';
 
-  return {
-    version: 1,
-    kind: 'web-only',
-    assignment: typeof raw.assignment === 'string' ? raw.assignment : (raw.task || ''),
-    test:       typeof raw.test       === 'string' ? raw.test       : (raw.tests || ''),
-    html, css, js
-  };
+    return {
+        version: 1,
+        kind: 'web-only',
+        assignment: typeof raw.assignment === 'string' ? raw.assignment : ( raw.task || '' ),
+        test: typeof raw.test === 'string' ? raw.test : ( raw.tests || '' ),
+        html, css, js
+    };
 }
 
-function safeSetValue(id, val){
-  const el = document.getElementById(id);
-  if (el) { el.value = val; }
-  else { log(`Warning: #${id} not found; skipped setting value`, 'warn'); }
+function safeSetValue ( id, val ) {
+    const el = document.getElementById( id );
+    if ( el ) { el.value = val; }
+    else { log( `Warning: #${ id } not found; skipped setting value`, 'warn' ); }
 }
 
-function rawLoadProject(raw){
-  const proj = normalizeProject(raw);
-  safeSetValue('assignment', proj.assignment);
-  safeSetValue('testArea',   proj.test);
-  if (typeof ed_html?.setValue === 'function') ed_html.setValue(proj.html, -1);
-  if (typeof ed_css?.setValue  === 'function') ed_css.setValue(proj.css, -1);
-  if (typeof ed_js?.setValue   === 'function') ed_js.setValue(proj.js, -1);
-  log('Project loaded.');
+function rawLoadProject ( raw ) {
+    const proj = normalizeProject( raw );
+    safeSetValue( 'assignment', proj.assignment );
+    safeSetValue( 'testArea', proj.test );
+    if ( typeof ed_html?.setValue === 'function' ) ed_html.setValue( proj.html, -1 );
+    if ( typeof ed_css?.setValue === 'function' ) ed_css.setValue( proj.css, -1 );
+    if ( typeof ed_js?.setValue === 'function' ) ed_js.setValue( proj.js, -1 );
+    log( 'Project loaded.' );
 }
 
 
 
 // ===== Initial restore (after DOM is parsed) =====
-window.addEventListener('DOMContentLoaded', () => {
-  try{
-    const cached = localStorage.getItem(STORAGE_KEY);
-    if (cached) {
-      const obj = JSON.parse(cached);
-      rawLoadProject(obj);
-    } else {
-      // seed defaults if nothing cached
-      if (!document.getElementById('assignment')) return;
-      // your default seeding function if you have one:
-      // setDefaultContent();
+window.addEventListener( 'DOMContentLoaded', () => {
+    try {
+        const cached = localStorage.getItem( STORAGE_KEY );
+        if ( cached ) {
+            const obj = JSON.parse( cached );
+            rawLoadProject( obj );
+        } else {
+            // seed defaults if nothing cached
+            if ( !document.getElementById( 'assignment' ) ) return;
+            // your default seeding function if you have one:
+            // setDefaultContent();
+        }
+    } catch ( e ) {
+        log( 'Skipping auto-restore: ' + e, 'warn' );
     }
-  }catch(e){
-    log('Skipping auto-restore: ' + e, 'warn');
-  }
-});
+} );
