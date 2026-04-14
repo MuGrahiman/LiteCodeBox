@@ -27,7 +27,7 @@ const log = ( msg, type = 'info' ) => {
         `<span style='color: ${ color }'>[${ time }]</span> ${ escapeHtml( msg ) }`;
 
     out.appendChild( line );
-    out.scrollTop = out.scrollHieght;
+    out.scrollTop = out.scrollHeight;
 }
 
 const clearOut = () => out.innerHTML = '';
