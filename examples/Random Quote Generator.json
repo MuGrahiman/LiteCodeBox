@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "kind": "web-only",
+  "assignment": "create a switcher app",
+  "test": "",
+  "html": "<h2>Random Quote</h2>\n<button id=\"newQuote\">New Quote</button>\n<blockquote id=\"quoteDisplay\">Click “New Quote” to get inspired.</blockquote>",
+  "css": "body { font-family: sans-serif; padding: 2rem; text-align: center; }\nblockquote { font-size: 1.25rem; font-style: italic; margin: 1rem 0; }\nbutton { padding: 0.5rem 1rem; }",
+  "js": "const quotes = [\n  \"The best way to get started is to quit talking and begin doing.\",\n  \"Don’t let yesterday take up too much of today.\",\n  \"You learn more from failure than from success. Don’t let it stop you.\"\n];\nconst display = document.getElementById('quoteDisplay');\ndocument.getElementById('newQuote').addEventListener('click', () => {\n  const q = quotes[Math.floor(Math.random() * quotes.length)];\n  display.textContent = q;\n});\nconsole.log('Quote Generator ready!');"
+}

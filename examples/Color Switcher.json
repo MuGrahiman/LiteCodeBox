@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "kind": "web-only",
+  "assignment": "create a switcher app",
+  "test": "",
+  "html": "<h2>Color Switcher</h2>\n<button id=\"redBtn\">Red</button>\n<button id=\"greenBtn\">Green</button>\n<button id=\"blueBtn\">Blue</button>\n<p>Click a button to change background color.</p>\n",
+  "css": "\nbody { font-family: sans-serif; text-align: center; padding: 2rem; }\nbutton { margin: 0.5rem; padding: 0.5rem 1rem; font-size: 1rem; }",
+  "js": "document.getElementById('redBtn').addEventListener('click', () => {\n  document.body.style.backgroundColor = 'lightcoral';\n});\ndocument.getElementById('greenBtn').addEventListener('click', () => {\n  document.body.style.backgroundColor = 'lightgreen';\n});\ndocument.getElementById('blueBtn').addEventListener('click', () => {\n  document.body.style.backgroundColor = 'lightblue';\n});\nconsole.log('Color Switcher ready!');"
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "kind": "web-only",
+  "assignment": "create a todo app",
+  "test": "",
+  "html": "\n<h2>Todo List</h2>\n<input type=\"text\" id=\"todoInput\" placeholder=\"New todo...\" />\n<button id=\"addTodo\">Add</button>\n<ul id=\"todos\"></ul>",
+  "css": "body { font-family: sans-serif; padding: 2rem; }\n#todoInput { padding: 0.5rem; width: 200px; }\nbutton { padding: 0.5rem 1rem; }\nul { list-style: none; padding: 0; margin-top: 1rem; }\nli { margin: 0.5rem 0; cursor: pointer; }\nli .completed { text-decoration: line-through; color: #888; }",
+  "js": "const input = document.getElementById('todoInput');\nconst addBtn = document.getElementById('addTodo');\nconst list = document.getElementById('todos');\n\naddBtn.addEventListener('click', () => {\n  const text = input.value.trim();\n  if (!text) return;\n  const li = document.createElement('li');\n  li.textContent = text;\n  li.addEventListener('click', () => li.classList.toggle('completed'));\n  list.appendChild(li);\n  input.value = '';\n});\nconsole.log('Todo List ready!');"
+}
